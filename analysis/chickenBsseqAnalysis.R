@@ -1,4 +1,4 @@
-##First set central code dir for sourcing
+#First set central code dir for sourcing
 codedir="~/Code/isac/chicken/meth"
 
 ##Plots go here:
