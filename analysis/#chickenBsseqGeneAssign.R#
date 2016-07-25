@@ -32,13 +32,17 @@ options(cores=4)
 
 # Load genes list
 # file is bed format
-genes.comp= read.table(file=gzfile(genepath),sep="\t",header=F,stringsAsFactors=F)
+genelab = c("bin","name","chrom","strand","txStart","txEnd","cdsStart","cdsEnd","exonCount","exonStarts","exonEnds","score","name2","cdsStartStat","cdsEndStat","exonFrames")
+genes.comp= read.table(file=gzfile(genepath),sep="\t",header=F,stringsAsFactors=F,col.names=genelab)
 genes = genes.comp[,c(2,13,3,5,6,4)]
 colnames(genes) = c("name","ID","chrom","start","end","strand")
 names = read.table(file=gzfile(namepath),sep="\t",header=F,stringsAsFactors=F)
 genes$ID = names[match(genes$name,names[,1]),2]
 genes = na.omit(genes)
-genes.gr = GRanges(seqnames=genes$chrom,IRanges(start=genes$start,end=genes$end),id=genes$ID,name=genes$name)
+genes.gr = GRanges(seqnames=genes$chrom,IRanges(start=genes$start,end=genes$end),strand=genes$strand,id=genes$ID,name=genes$name)
+
+save(list=c("genes.comp","genes.gr"),file=file.path(procroot,"galGal4_genes.rda"))
+
 
 # Load bsseq.R file
 load(file=file.path(procroot,"bsobject.rda")) # bsobject has bismark,BS.fit.large,BS.fit.small
@@ -58,17 +62,17 @@ dmrs.gr = GRanges()
 blocks.gr = GRanges()
 for (i in seq(length(combos[,1]))){
     size=length(dmrs[[i]]$chr)
-    d.gr = GRanges(seqnames=dmrs[[i]]$chr,IRanges(start=dmrs[[i]]$start,end=dmrs[[i]]$end),stat=dmrs[[i]]$areaStat,direction=dmrs[[i]]$direction,one=rep(combos$one[i],size),two=rep(combos$two[i],size),label=rep(combos$label[i],size))#
+    d.gr = GRanges(seqnames=dmrs[[i]]$chr,IRanges(start=dmrs[[i]]$start,end=dmrs[[i]]$end),g1mean=dmrs[[i]]$group1.mean,g2mean=dmrs[[i]]$group2.mean,meanDiff=dmrs[[i]]$meanDiff,areaStat=dmrs[[i]]$areaStat,direction=dmrs[[i]]$direction,one=rep(combos$one[i],size),two=rep(combos$two[i],size),label=rep(combos$label[i],size))#
     dmrs.gr = append(dmrs.gr,d.gr)
     size = length(blocks[[i]]$chr)
-    b.gr = GRanges(seqnames=blocks[[i]]$chr,IRanges(start=blocks[[i]]$start,end=blocks[[i]]$end),stat=blocks[[i]]$areaStat,direction=blocks[[i]]$direction,one=rep(combos$one[i],size),two=rep(combos$two[i],size),label=rep(combos$label[i],size))#
+    b.gr = GRanges(seqnames=blocks[[i]]$chr,IRanges(start=blocks[[i]]$start,end=blocks[[i]]$end),g1mean=blocks[[i]]$group1.mean,g2mean=blocks[[i]]$group2.mean,meanDiff=blocks[[i]]$meanDiff,areaStat=blocks[[i]]$areaStat,direction=blocks[[i]]$direction,one=rep(combos$one[i],size),two=rep(combos$two[i],size),label=rep(combos$label[i],size))#
     blocks.gr = append(blocks.gr,b.gr)
 }
 
 dmrs.gr$type = rep("dmr",length(dmrs.gr))
 blocks.gr$type = rep("block",length(blocks.gr))
 dmrtot.gr = append(dmrs.gr,blocks.gr)
-dmrtot.gr = dmrtot.gr[order(-abs(dmrtot.gr$stat))]
+dmrtot.gr = dmrtot.gr[order(-abs(dmrtot.gr$areaStat))]
 
 ## use nearest to do matches
 distnear = as.data.frame(distanceToNearest(dmrtot.gr,genes.gr))
@@ -119,7 +123,7 @@ if (TRUE){
         dev.off()
     }
     colnames(genenames) = c("rank",comps)
-    write(genenames,file=file.path(outdir,"methgenes.csv"),sep=",")
+    write.table(genenames,file=file.path(outdir,"methgenes.csv"),quote=FALSE,row.names=F,col.names=T,sep=",")
 }
 
 # starting off with dmrtot.gr, genes.gr, and distnear/proxima (hits objects)

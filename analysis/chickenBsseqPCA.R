@@ -60,8 +60,9 @@ dev.off()
 
 #PCA?
 # get the methylation values: refer to bsseq user guide
-totmeth = getMeth(bismark,type="raw",what="perBase")
-idx = which(rowSums(!is.nan(totmeth))==12)
+totmeth = getMeth(BS.fit.small,type="smooth",what="perBase")
+totcov = getCoverage(bismark,type="Cov",what="perBase")
+idx = which(rowSums(totcov>=5)==12)
 meth = totmeth[idx,]
 loc = granges(bismark)[idx]
 
@@ -69,7 +70,7 @@ meth.t = t(meth)
 
 meth.pca = prcomp(meth.t,center=TRUE,retx=TRUE)
 
-meth.x = data.frame(meth.pca$x[,1:2])
+meth.x = data.frame(meth.pca$x[,1:6])
 meth.x$pheno = pData$pheno
 x.pca = t(meth.pca$x)
 colnames(x.pca) = pData$pheno
@@ -77,6 +78,8 @@ x.melt = melt(x.pca)
 
 require(ggplot2)
 g = ggplot(meth.x,aes(x=PC1,y=PC2,colour=pheno))+geom_point()+theme_bw()
+g2 = ggplot(meth.x,aes(x=PC3,y=PC4,colour=pheno))+geom_point()+theme_bw()
+g3 = ggplot(meth.x,aes(x=PC5,y=PC6,colour=pheno))+geom_point()+theme_bw()
 
 pdf(file.path(plotdir,"pcaBiplot.pdf"))
 print(g)

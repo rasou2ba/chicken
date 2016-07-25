@@ -44,6 +44,7 @@ genes.gr = GRanges(seqnames=genes$chrom,IRanges(start=genes$start,end=genes$end)
 # Load bsseq.R file
 load(file=file.path(procroot,"bsobject.rda")) # bsobject has bismark,BS.fit.large,BS.fit.small
 load(file=file.path(procroot,"processed.rda"))# processed has blocks,dmrs,tstat.blocks,tstat.dmrs,combos,bismark.samp.info
+load(file=file.path(procroot,"dmrgene.rda"))# dmrgene has dmrtot.gr,genes.gr,distnear,proximal,combos, and bismark.samp.info
 
 pData <- pData(BS.fit.small)
 pData$lab = as.character(paste0(bismark.samp.info$type,bismark.samp.info$time))
@@ -69,10 +70,18 @@ for (i in seq(length(candidates[1,]))){
         nwid = width+width(genes.cand[j])
         genestart = start(genes.cand[j])
         geneend = end(genes.cand[j])
+        # get the genomic coordinates for the region surrounding the gene
         region = resize(genes.cand[j],width=nwid,fix="center")
         regy = granges(BS.fit.small) %within% region
+        # methylation values for the coordinates
         meth = getMeth(BS.fit.small[regy,],type="smooth",what="perBase")
+        # coverage values for the coordinates
         cov = as.data.frame(getCoverage(BS.fit.small[regy,],type="Cov",what="perBase"))
+        # DMRs in the region
+        dmr = dmrtot.gr[which(dmrtot.gr %within% region)]
+        topdmr = dmr[!duplicated(dmr$label)]
+        topdmr.df = as.data.frame(topdmr)
+        topdmr.df$label = paste(topdmr.df$label,round(topdmr.df$stat),sep="=")
         colnames(meth)=colnames(cov)=sampleNames(BS.fit.small)
         cov$loc = as.data.frame(granges(BS.fit.small[regy]))[,2]
         meth.melt= melt(meth)
@@ -82,9 +91,15 @@ for (i in seq(length(candidates[1,]))){
         
         qmeth = cplot + stat_smooth(data=dat,aes(x=loc,y=meth,group=sample,color=lab),se=F,method="loess")+
             geom_rug(data=dat,aes(x=loc))+scale_y_continuous(limits=c(0,1))+
-            geom_rect(mapping=aes(xmin=genestart,xmax=geneend,ymin=0,ymax=1,fill="gene"),alpha=0.2)+ labs(title=genes.cand[j]$id,x="",y="methylation")
+            geom_rect(mapping=aes(xmin=genestart,xmax=geneend,ymin=0,ymax=1,fill="gene"),alpha=0.3,colour="gray30")+
+            geom_rect(data=topdmr.df[1:2,],inherit.aes=F,aes(xmin=start,xmax=end,ymin=0,ymax=1,fill=label),colour="gray30",alpha=0.3)+
+            scale_fill_brewer(palette="Set1")+
+            labs(title=genes.cand[j]$id,x="",y="methylation")
+
+        
         qcov = cplot + stat_smooth(data=dat,aes(x=loc,y=cov,group=sample,color=lab),se=F,method="loess")+
             labs(x=seqnames(genes.cand[j]),y="coverage")
+        
         multiplot(qmeth,qcov,cols=1)
     }
     dev.off()

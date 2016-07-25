@@ -10,8 +10,10 @@ procroot="/mithril/Data/NGS/Aligned/150415_HiSeqChick"
 
 ##Gene data
 genedir="/mithril/homes/isac/Data/genes"
-genefile="galGal4refGene.txt.gz"
+genefile="galGal4ensGene.txt.gz"
+namefile="galGal4ensemblToGeneName.txt.gz"
 genepath=file.path(genedir,genefile)
+namepath=file.path(genedir,namefile)
 
 ##Load libraries and sources
 require(Biostrings)
@@ -20,7 +22,6 @@ require(ggplot2)
 require(bsseq)
 require(reshape)
 require(GenomicRanges)
-library(topGO)
 source("~/Code/timp_genetics/util/timp_seqtools.R")
 source("~/Code/timp_genetics/util/read_tools.R")
 source("~/Code/ilee/util/ilee_plot.R")
@@ -31,10 +32,17 @@ options(cores=4)
 
 # Load genes list
 # file is bed format
-genes.comp= read.table(file=gzfile(genepath),sep="\t",header=F,stringsAsFactors=F)
+genelab = c("bin","name","chrom","strand","txStart","txEnd","cdsStart","cdsEnd","exonCount","exonStarts","exonEnds","score","name2","cdsStartStat","cdsEndStat","exonFrames")
+Genes.comp= read.table(file=gzfile(genepath),sep="\t",header=F,stringsAsFactors=F,col.names=genelab)
 genes = genes.comp[,c(2,13,3,5,6,4)]
 colnames(genes) = c("name","ID","chrom","start","end","strand")
-genes.gr = GRanges(seqnames=genes$chrom,IRanges(start=genes$start,end=genes$end),id=genes$ID,name=genes$name)
+names = read.table(file=gzfile(namepath),sep="\t",header=F,stringsAsFactors=F)
+genes$ID = names[match(genes$name,names[,1]),2]
+genes = na.omit(genes)
+genes.gr = GRanges(seqnames=genes$chrom,IRanges(start=genes$start,end=genes$end),strand=genes$strand,id=genes$ID,name=genes$name)
+
+save(list=c("genes.comp","genes.gr"),file=file.path(procroot,"galGal4_genes.rda"))
+
 
 # Load bsseq.R file
 load(file=file.path(procroot,"bsobject.rda")) # bsobject has bismark,BS.fit.large,BS.fit.small
@@ -54,17 +62,17 @@ dmrs.gr = GRanges()
 blocks.gr = GRanges()
 for (i in seq(length(combos[,1]))){
     size=length(dmrs[[i]]$chr)
-    d.gr = GRanges(seqnames=dmrs[[i]]$chr,IRanges(start=dmrs[[i]]$start,end=dmrs[[i]]$end),stat=dmrs[[i]]$areaStat,direction=dmrs[[i]]$direction,one=rep(combos$one[i],size),two=rep(combos$two[i],size),label=rep(combos$label[i],size))#
+    d.gr = GRanges(seqnames=dmrs[[i]]$chr,IRanges(start=dmrs[[i]]$start,end=dmrs[[i]]$end),meanDiff=dmrs[[i]]$meanDiff,areaStat=dmrs[[i]]$areaStat,direction=dmrs[[i]]$direction,one=rep(combos$one[i],size),two=rep(combos$two[i],size),label=rep(combos$label[i],size))#
     dmrs.gr = append(dmrs.gr,d.gr)
     size = length(blocks[[i]]$chr)
-    b.gr = GRanges(seqnames=blocks[[i]]$chr,IRanges(start=blocks[[i]]$start,end=blocks[[i]]$end),stat=blocks[[i]]$areaStat,direction=blocks[[i]]$direction,one=rep(combos$one[i],size),two=rep(combos$two[i],size),label=rep(combos$label[i],size))#
+    b.gr = GRanges(seqnames=blocks[[i]]$chr,IRanges(start=blocks[[i]]$start,end=blocks[[i]]$end),meanDiff=blocks[[i]]$meanDiff,areaStat=blocks[[i]]$areaStat,direction=blocks[[i]]$direction,one=rep(combos$one[i],size),two=rep(combos$two[i],size),label=rep(combos$label[i],size))#
     blocks.gr = append(blocks.gr,b.gr)
 }
 
 dmrs.gr$type = rep("dmr",length(dmrs.gr))
 blocks.gr$type = rep("block",length(blocks.gr))
 dmrtot.gr = append(dmrs.gr,blocks.gr)
-dmrtot.gr = dmrtot.gr[order(-abs(dmrtot.gr$stat))]
+dmrtot.gr = dmrtot.gr[order(-abs(dmrtot.gr$areaStat))]
 
 ## use nearest to do matches
 distnear = as.data.frame(distanceToNearest(dmrtot.gr,genes.gr))
@@ -74,7 +82,7 @@ save(list=c("dmrtot.gr","genes.gr","distnear","proximal","combos","bismark.samp.
 
 
 # plotting
-if (FALSE){
+if (TRUE){
     bins= c(seq(0,2.6e6,10000))
     distribution = hist(distnear$distance,breaks=bins,plot=FALSE)
     dist.df = data.frame(distance=distribution$breaks[-length(distribution$breaks)],freq=distribution$density,count=distribution$counts)
@@ -102,17 +110,20 @@ if (FALSE){
     dmrlist[["dmr"]]=BS.fit.small
     dmrlist[["block"]]=BS.fit.large
     plotnum = 10
-    
+    genenames = data.frame(rank=rep(seq(plotnum),2))
     for (i in comps){
         pdf(file.path(plotdir,paste0(i,".pdf")),width=8.5,height=11)
         pri = proximal[which(dmrtot.gr[proximal$queryHits]$label==i),]
+        names = c()
         for (j in types){
             prj = pri[which(dmrtot.gr[pri$queryHits]$type==j),]
-            q = bsseqPlot(dmrtot.gr,genes.gr,prj,dmrlist[[j]],plotnum)
+            names = c(names,bsseqPlot(dmrtot.gr,genes.gr,prj,dmrlist[[j]],plotnum))
         }
+        genenames = cbind(genenames,names)
         dev.off()
     }
-    
+    colnames(genenames) = c("rank",comps)
+    write.table(genenames,file=file.path(outdir,"methgenes.csv"),quote=FALSE,row.names=F,col.names=T,sep=",")
 }
 
 # starting off with dmrtot.gr, genes.gr, and distnear/proxima (hits objects)
