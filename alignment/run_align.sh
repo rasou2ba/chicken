@@ -10,7 +10,7 @@ do
     do
 	##bismark align
 	if [ 0 -eq 0 ]; then	    
-	    ./bismark_align_marcc.sh ${lane} ${samp}
+	    sbatch bismark_align_marcc.sh ${lane} ${samp}
 	fi
     done
 
