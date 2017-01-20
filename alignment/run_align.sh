@@ -15,8 +15,10 @@ do
     done
     
     if [ ! -e "${outdir}/${samp}/${1}.full.bam" ]; then
-	echo "${1} is done"
+	echo ${1}" is done"
 	#sbatch bismark_cat.sh $samp
+    else
+	echo ${1}" has not finished aligning!"
     fi
     
     if [ 0 -eq 1 ]; then
