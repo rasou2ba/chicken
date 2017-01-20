@@ -20,7 +20,7 @@ do
 	echo ${samp} "already concatanated"
     fi
     
-    if [ 0 -eq 0 ]; then
+    if [ 0 -eq 1 ]; then
 	sbatch bismark_extract.sh $samp
     fi
 
