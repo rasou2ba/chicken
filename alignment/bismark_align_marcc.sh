@@ -13,6 +13,7 @@
 trimpath=/home-2/ilee29@jhu.edu/Code/trim_galore_v0.4.2/trim_galore
 bismarkpath=/home-2/ilee29@jhu.edu/Code/bismark_v0.17.0
 
+refpath=/scratch/groups/wtimp1/Reference/chicken/galGal5
 rawdir=/scratch/groups/wtimp1/170119_chicken/fastq
 outdir=/scratch/groups/wtimp1/170119_chicken/aligned/${2}
 tmpdir=/scratch/users/ilee29@jhu.edu/tmp
@@ -36,7 +37,7 @@ echo ${trim2}
 
 ${bismarkpath}/bismark --bam --non_directional --bowtie2 \
     -p 4 \
-    /home/sgeadmin/ref/Reference/chicken/ \
+    ${refpath} \ 
     -1 ${trim1} \
     -2 ${trim2} \
     --o ${outdir}
