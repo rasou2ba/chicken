@@ -14,7 +14,7 @@ do
 	fi
     done
     
-    if [ ! -e "${outdir}/${samp}/${1}.full.bam" ] && [ 0 -eq 0 ]; then
+    if [[ ! -e "${outdir}/${samp}/${1}.full.bam"  && 0 -eq 0 ]]; then
 	sbatch bismark_cat_marcc.sh ${samp}
     else
 	echo ${samp} "already concatanated"
