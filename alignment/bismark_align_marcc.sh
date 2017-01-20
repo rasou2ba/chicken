@@ -40,6 +40,7 @@ ${bismarkpath}/bismark --bam --non_directional --bowtie2 \
     --genome ${refpath} \
     -1 ${trim1} \
     -2 ${trim2} \
+    --temp_dir ${tmpdir}/${lanesamp} \
     --output_dir ${outdir}
 
 rm -R ${tmpdir}/${lanesamp}
