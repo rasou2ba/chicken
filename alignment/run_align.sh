@@ -9,16 +9,17 @@ do
     for lane in {1..8}
     do
 	##bismark align
-	if [ 0 -eq 0 ]; then	    
+	if [ 0 -eq 1 ]; then	    
 	    sbatch bismark_align_marcc.sh ${lane} ${samp}
 	fi
     done
-
-    if [ 0 -eq 1 ]; then
-	qsub -pe orte 16 -hold_jid bismarkalign_${samp} -N bismarkcat_${samp} -cwd bismark_cat.sh $samp
+    
+    if [ !-e ${outdir}/${samp}/${1}.full.bam ]; then
+	echo "${1} is done"
+	#sbatch bismark_cat.sh $samp
     fi
     
-    if [ 0 -eq 1 ]; then
+    if [ 0 -eq 1 ]; thenz
 	    qsub -pe orte 16 -hold_jid bismarkcat_${samp} -N bismarkextract_${samp} -cwd bismark_extract.sh $samp
     fi
 
