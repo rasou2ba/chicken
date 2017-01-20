@@ -2,7 +2,7 @@
 
 #SBATCH
 #SBATCH --job-name=bismark-align-ilee
-#SBATCH --time=5:0:0
+#SBATCH --time=0:5:0
 #SBATCH --partition=shared
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
@@ -20,6 +20,7 @@ outpath=${dir}/${1}.full.bam
 
 samtools cat -o ${outpath} ${bamid}
 
+echo ${1} " done concatanating"
 
 
 

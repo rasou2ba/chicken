@@ -16,10 +16,11 @@ do
     
     if [ ! -e "${outdir}/${samp}/${1}.full.bam" ] && [ 0 -eq 0 ]; then
 	sbatch bismark_cat_marcc.sh ${samp}
-	
+    else
+	echo ${samp} "already concatanated"
     fi
     
-    if [ 0 -eq 1 ]; then
+    if [ 0 -eq 0 ]; then
 	sbatch bismark_extract.sh $samp
     fi
 
