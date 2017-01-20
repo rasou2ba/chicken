@@ -1,25 +1,36 @@
 #!/bin/bash
 
-rawdir=/scratch/groups/wtimp1/170119_chicken/fastq
+trimpath=/home/isac/Code/trim_galore_zip/trim_galore
+bismarkpath=~/Code/bismark
 
-outdir=/scratch/groups/wtimp1/170119_chicken/aligned/${2}
-
+refpath=/atium/Data/Reference/chicken/galGal5
+rawdir=/mithril/Data/NGS/Raw/150415_HiSeqNorwayChicken/wtimp1_118512/FASTQ
+outdir=/atium/Data/NGS/Aligned/170120_chicken/${2}
 tmpdir=/scratch/tmp
 
 lanesamp=${1}_${2}
 
 mkdir ${tmpdir}/${lanesamp}
-
 rm ${tmpdir}/${lanesamp}/*
 
-~/trim_galore_zip/trim_galore --paired ${rawdir}/C6HRUANXX_${lanesamp}_1.fastq.gz ${rawdir}/C6HRUANXX_${lanesamp}_2.fastq.gz \
+fastq1=`ls ${rawdir}/C6HRUANXX_${lanesamp}_1.fastq.gz`
+fastq2=`ls ${rawdir}/C6HRUANXX_${lanesamp}_2.fastq.gz`
+
+${trimpath} --paired ${fastq1} ${fastq2} \
     -o ${tmpdir}/${lanesamp}
 
-~/bismark_v0.14.2/bismark --bam --non_directional --bowtie2 \
+trim1=`ls ${tmpdir}/${lanesamp}/*val_1.fq.gz`
+trim2=`ls ${tmpdir}/${lanesamp}/*val_2.fq.gz`
+
+echo ${trim1}
+echo ${trim2}
+
+${bismarkpath}/bismark --bam --non_directional --bowtie2 \
     -p 4 \
-    /home/sgeadmin/ref/Reference/chicken/ \
-    -1 ${tmpdir}/${lanesamp}/*val_1.fq.gz \
-    -2 ${tmpdir}/${lanesamp}/*val_2.fq.gz \
-    --o ${outdir}
+    --genome ${refpath} \
+    -1 ${trim1} \
+    -2 ${trim2} \
+    --output_dir ${outdir}
 
 rm -R ${tmpdir}/${lanesamp}
+
