@@ -14,7 +14,7 @@ do
 	fi
     done
     
-    if [ !-e ${outdir}/${samp}/${1}.full.bam ]; then
+    if [ !-e "${outdir}/${samp}/${1}.full.bam" ]; then
 	echo "${1} is done"
 	#sbatch bismark_cat.sh $samp
     fi
