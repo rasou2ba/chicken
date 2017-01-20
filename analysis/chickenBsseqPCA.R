@@ -62,9 +62,8 @@ dev.off()
 # get the methylation values: refer to bsseq user guide
 totmeth = getMeth(BS.fit.small,type="smooth",what="perBase")
 totcov = getCoverage(bismark,type="Cov",what="perBase")
-idx = which(rowSums(totcov>=5)==12)
+idx = which(rowSums(totcov>=2)==12)
 meth = totmeth[idx,]
-loc = granges(bismark)[idx]
 
 meth.t = t(meth)
 
@@ -83,6 +82,8 @@ g3 = ggplot(meth.x,aes(x=PC5,y=PC6,colour=pheno))+geom_point()+theme_bw()
 
 pdf(file.path(plotdir,"pcaBiplot.pdf"))
 print(g)
+print(g2)
+print(g3)
 dev.off()
 
 pdf(file.path(plotdir,"pcaVariance.pdf"))

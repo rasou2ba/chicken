@@ -2,11 +2,11 @@
 
 outdir=/scratch/groups/wtimp1/170119_chicken/aligned
 
-for samp in ACTTGA AGTCAA AGTTCC ATGTCA CAGATC CCGTCC CTTGTA GATCAG GGCTAC GTCCGC GTGAAA TAGCTT
+for samp in ACTTGAsubset
 do
     mkdir ${outdir}/${samp}
 
-    for lane in {1..8}
+    for lane in 1
     do
 	##bismark align
 	if [ 0 -eq 0 ]; then	    

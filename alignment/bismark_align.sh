@@ -1,10 +1,10 @@
 #!/bin/bash
 
-rawdir=/home/sgeadmin/data/chicken
+rawdir=/scratch/groups/wtimp1/170119_chicken/fastq
 
-outdir=/home/sgeadmin/data/chickenaligned/${2}
+outdir=/scratch/groups/wtimp1/170119_chicken/aligned/${2}
 
-tmpdir=/home/sgeadmin/data/temp
+tmpdir=/scratch/tmp
 
 lanesamp=${1}_${2}
 
