@@ -15,7 +15,7 @@ bismarkpath=/home-2/ilee29@jhu.edu/Code/bismark_v0.17.0
 
 rawdir=/scratch/groups/wtimp1/170119_chicken/fastq
 outdir=/scratch/groups/wtimp1/170119_chicken/aligned/${2}
-tmpdir=/scratch/tmp
+tmpdir=/scratch/users/ilee29@jhu.edu/tmp
 
 lanesamp=${1}_${2}
 

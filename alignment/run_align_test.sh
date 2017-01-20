@@ -9,8 +9,8 @@ do
     for lane in 1
     do
 	##bismark align
-	if [ 0 -eq 0 ]; then	    
-	    ./bismark_align_marcc.sh ${lane} ${samp}
+	if [ 0 -eq 0 ]; then
+	    sbatch bismark_align_marcc.sh ${lane} ${samp}
 	fi
     done
 
