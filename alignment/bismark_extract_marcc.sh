@@ -10,6 +10,11 @@
 #SBATCH --mail-type=end
 #SBATCH --mail-user=ilee29@jhu.edu
 
+###load module
+module load perl
+
+
+###execute
 wdir=$PWD
 outdir=/scratch/groups/wtimp1/170119_chicken/aligned/${1}
 bismarkpath=/home-2/ilee29@jhu.edu/Code/Bismark
