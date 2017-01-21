@@ -11,7 +11,7 @@
 #SBATCH --mail-user=ilee29@jhu.edu
 
 trimpath=/home-2/ilee29@jhu.edu/Code/trim_galore_v0.4.2/trim_galore
-bismarkpath=/home-2/ilee29@jhu.edu/Code/bismark_v0.17.0
+bismarkpath=/home-2/ilee29@jhu.edu/Code/Bismark
 
 refpath=/scratch/groups/wtimp1/Reference/chicken/galGal5
 rawdir=/scratch/groups/wtimp1/170119_chicken/fastq
