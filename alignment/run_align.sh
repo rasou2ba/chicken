@@ -14,7 +14,7 @@ do
 	fi
     done
     
-    if [[  0 -eq 0 ]]; then
+    if [[  1 -eq 0 ]]; then
 	sbatch bismark_cat_marcc.sh ${samp}
     else
 	echo ${samp} "already concatanated"
