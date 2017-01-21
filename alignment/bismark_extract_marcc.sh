@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH
-#SBATCH --job-name=bismark-align-ilee
+#SBATCH --job-name=bismark-extract-ilee
 #SBATCH --time=2:0:0
 #SBATCH --partition=shared
 #SBATCH --nodes=1
@@ -12,7 +12,6 @@
 
 ###load module
 module load perl
-
 
 ###execute
 wdir=$PWD
@@ -29,6 +28,6 @@ ${bismarkpath}/coverage2cytosine --gzip --dir ${outdir}/ --genome_folder ${refpa
 
 cd $outdir
 
-#${bismarkpath}/bismark2report 
+${bismarkpath}/bismark2report 
 
 cd $wdir
