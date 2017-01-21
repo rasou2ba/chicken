@@ -2,7 +2,7 @@
 
 outdir=/scratch/groups/wtimp1/170119_chicken/aligned
 
-for samp in ACTTGA AGTCAA AGTTCC ATGTCA CAGATC CCGTCC CTTGTA GATCAG GGCTAC GTCCGC GTGAAA TAGCTT
+for samp in ACTTGA #AGTCAA AGTTCC ATGTCA CAGATC CCGTCC CTTGTA GATCAG GGCTAC GTCCGC GTGAAA TAGCTT
 do
     mkdir ${outdir}/${samp}
 
@@ -20,8 +20,8 @@ do
 	echo ${samp} "already concatanated"
     fi
     
-    if [ 0 -eq 1 ]; then
-	sbatch bismark_extract.sh $samp
+    if [ 0 -eq 0 ]; then
+	sbatch bismark_extract_marcc.sh $samp
     fi
 
 done    

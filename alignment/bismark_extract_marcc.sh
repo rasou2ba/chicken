@@ -2,7 +2,7 @@
 
 #SBATCH
 #SBATCH --job-name=bismark-align-ilee
-#SBATCH --time=5:0:0
+#SBATCH --time=2:0:0
 #SBATCH --partition=shared
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=8
