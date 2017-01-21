@@ -1,8 +1,8 @@
 #!/bin/bash
 
-outdir=/scratch/groups/wtimp1/170119_chicken/aligned
+outdir=/atium/Data/NGS/Aligned/170120_chicken
 
-for samp in ACTTGA AGTCAA AGTTCC ATGTCA CAGATC CCGTCC CTTGTA GATCAG GGCTAC GTCCGC GTGAAA TAGCTT
+for samp in ACTTGA #AGTCAA AGTTCC ATGTCA CAGATC CCGTCC CTTGTA GATCAG GGCTAC GTCCGC GTGAAA TAGCTT
 do
     mkdir ${outdir}/${samp}
 
@@ -21,11 +21,11 @@ do
     fi
     
     if [ 0 -eq 0 ]; then
-	sbatch bismark_extract_marcc.sh $samp
+	./bismark_extract.sh $samp
     fi
 
     if [ 1 -eq 0 ]; then
-	sbatch bismark_cytoReport_marcc.sh $samp
+	./bismark_extract.sh $samp
     fi
 
 done    

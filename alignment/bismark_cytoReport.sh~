@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #SBATCH
-#SBATCH --job-name=extract
-#SBATCH --time=5:0:0
+#SBATCH --job-name=bismark-extract-ilee
+#SBATCH --time=2:0:0
 #SBATCH --partition=shared
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=8
@@ -24,4 +24,10 @@ refpath=/scratch/groups/wtimp1/Reference/chicken/galGal5
 #    ${outdir}/${1}.full.bam -o ${outdir} --no_header
 
 ${bismarkpath}/bismark2bedGraph --dir ${outdir}/ --scaffolds -o ${1}.full.bedGraph ${outdir}/CpG*${1}*.txt.gz 
+${bismarkpath}/coverage2cytosine --gzip --dir ${outdir}/ --genome_folder ${refpath} -o ${1}.cyto.txt.gz ${outdir}/${1}.full.bismark.cov.gz
 
+cd $outdir
+
+${bismarkpath}/bismark2report 
+
+cd $wdir
