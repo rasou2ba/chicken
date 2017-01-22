@@ -1,21 +1,11 @@
 #!/bin/bash
 
-#SBATCH
-#SBATCH --job-name=align
-#SBATCH --time=5:0:0
-#SBATCH --partition=shared
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=24
-#####SBATCH --cpus-per-task=3
-#SBATCH --mail-type=end
-#SBATCH --mail-user=ilee29@jhu.edu
+trimpath=/home/isac/Code/trim_galore_zip/trim_galore
+bismarkpath=/home/isac/Code/Bismark
 
-trimpath=/home-2/ilee29@jhu.edu/Code/trim_galore_v0.4.2/trim_galore
-bismarkpath=/home-2/ilee29@jhu.edu/Code/Bismark
-
-refpath=/scratch/groups/wtimp1/Reference/chicken/galGal5cln
-rawdir=/scratch/groups/wtimp1/170119_chicken/fastq
-outdir=${3}
+refpath=/atium/Data/Reference/chicken/galGal5cln
+rawdir=/mithril/Data/NGS/Raw/150415_HiSeqNorwayChicken/wtimp1_118512/FASTQ
+outdir=/scratch/groups/wtimp1/170119_chicken/aligned/${2}
 tmpdir=/scratch/users/ilee29@jhu.edu/tmp
 
 lanesamp=${1}_${2}
