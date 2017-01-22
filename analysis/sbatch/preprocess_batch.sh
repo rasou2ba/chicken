@@ -2,7 +2,7 @@
 
 #SBATCH
 #SBATCH --job-name=align
-#SBATCH --time=1:00:0
+#SBATCH --time=12:00:0
 #SBATCH --partition=lrgmem
 #SBATCH --nodes=1
 #SBATCH --mem=240GB
@@ -16,4 +16,4 @@ module load R
 
 ###execute
 
-~/Code/projects/chicken/analysis/chickenBsseqPreproc_marcc.R ACTTGA
+~/Code/projects/chicken/analysis/chickenBsseqPreproc_marcc.R ${1}
