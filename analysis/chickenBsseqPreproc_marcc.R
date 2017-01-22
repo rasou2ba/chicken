@@ -8,7 +8,7 @@ library(parallel)
 
 detectCores()
 ##read in the data
-if (TRUE) {
+if (F) {
     bismark.samp.info=read.csv(file=file.path(procroot,"infotable.csv"),row.names=1,colClasses="character")
     bismark.samp.info$filepath=file.path(datdir, bismark.samp.info$sample, paste0(bismark.samp.info$sample, ".cyto.txt.gz"))
 
@@ -16,7 +16,7 @@ if (TRUE) {
 }
 
 ##
-if (TRUE) {
+if (F) {
     ## smoothing
     ##from amy
     ##prolly based on cancer as well for Block finding
