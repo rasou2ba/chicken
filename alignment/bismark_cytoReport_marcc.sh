@@ -2,7 +2,7 @@
 
 #SBATCH
 #SBATCH --job-name=cytoReport
-#SBATCH --time=5:0:0
+#SBATCH --time=1:0:0
 #SBATCH --partition=shared
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1

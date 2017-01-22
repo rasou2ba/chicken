@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH
-#SBATCH --job-name=bismark-align-ilee
+#SBATCH --job-name=align
 #SBATCH --time=5:0:0
 #SBATCH --partition=shared
 #SBATCH --nodes=1
