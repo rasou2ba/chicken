@@ -14,7 +14,7 @@ if (T) {
     bismark.samp.info=read.csv(file=file.path(procroot,"infotable.csv"),row.names=1,colClasses="character")
     bismark.samp.info$filepath=file.path(datdir, bismark.samp.info$sample, paste0(bismark.samp.info$sample, ".cyto.txt.gz"))
     ind = which(bismark.samp.info$sample==samp)
-    bismark=read.bismark(files=bismark.samp.info$filepath[ind],sampleNames=bismark.samp.info$label[ind],fileType="cytosineReport",mc.cores=12,verbose=T)
+    bismark=read.bismark(files=bismark.samp.info$filepath[ind],sampleNames=bismark.samp.info$label[ind],fileType="cytosineReport",verbose=T)
 }
 
 ## smoothing
