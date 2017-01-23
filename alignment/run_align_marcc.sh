@@ -14,11 +14,11 @@ do
 	fi
     done
     
-    if [[  0 -eq 0 ]]; then
+    if [[  1 -eq 0 ]]; then
 	sbatch bismark_cat_marcc.sh ${samp} ${outdir}/${samp}
     fi
     
-    if [ 1 -eq 0 ]; then
+    if [ 0 -eq 0 ]; then
 	sbatch bismark_extract_marcc.sh ${samp} ${outdir}/${samp}
     fi
 
