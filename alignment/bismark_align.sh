@@ -5,8 +5,8 @@ bismarkpath=/home/isac/Code/Bismark
 
 refpath=/atium/Data/Reference/chicken/galGal5cln
 rawdir=/mithril/Data/NGS/Raw/150415_HiSeqNorwayChicken/wtimp1_118512/FASTQ
-outdir=/scratch/groups/wtimp1/170119_chicken/aligned/${2}
-tmpdir=/scratch/users/ilee29@jhu.edu/tmp
+outdir=${3}
+tmpdir=/scratch/tmp
 
 lanesamp=${1}_${2}
 

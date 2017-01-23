@@ -1,16 +1,16 @@
 #!/bin/bash
 
-outdir=/atium/Data/NGS/Aligned/170120_chicken
+outdir=/atium/Data/NGS/Aligned/170120_chicken/cln
 
 for samp in ACTTGA #AGTCAA AGTTCC ATGTCA CAGATC CCGTCC CTTGTA GATCAG GGCTAC GTCCGC GTGAAA TAGCTT
 do
     mkdir ${outdir}/${samp}
 
-    for lane in {1..8}
+    for lane in 1 #.8}
     do
 	##bismark align
-	if [ 0 -eq 1 ]; then	    
-	    sbatch bismark_align_marcc.sh ${lane} ${samp}
+	if [ 1 -eq 1 ]; then	    
+	    ./bismark_align.sh ${lane} ${samp} ${outdir}/${samp}
 	fi
     done
     
@@ -20,7 +20,7 @@ do
 	echo ${samp} "already concatanated"
     fi
     
-    if [ 0 -eq 0 ]; then
+    if [ 1 -eq 0 ]; then
 	./bismark_extract.sh $samp
     fi
 

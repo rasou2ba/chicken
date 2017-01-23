@@ -7,9 +7,15 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=24
 #####SBATCH --cpus-per-task=3
+#SBATCH --mem=25GB
 #SBATCH --mail-type=end
 #SBATCH --mail-user=ilee29@jhu.edu
 
+###Load modules
+module load bowtie2
+module load samtools
+
+###execute
 trimpath=/home-2/ilee29@jhu.edu/Code/trim_galore_v0.4.2/trim_galore
 bismarkpath=/home-2/ilee29@jhu.edu/Code/Bismark
 
