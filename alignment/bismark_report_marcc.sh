@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #SBATCH
-#SBATCH --job-name=cytoReport
-#SBATCH --time=1:0:0
+#SBATCH --job-name=bismarkReport
+#SBATCH --time=5:0:0
 #SBATCH --partition=shared
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
@@ -19,7 +19,7 @@ outdir=${2}
 bismarkpath=/home-2/ilee29@jhu.edu/Code/Bismark
 refpath=/scratch/groups/wtimp1/Reference/chicken/galGal5cln
 
-${bismarkpath}/bismark2bedGraph --dir ${outdir}/ --scaffolds -o ${1}.full.bedGraph ${outdir}/CpG*${1}*.txt.gz
+${bismarkpath}/bismark2bedGraph --dir ${outdir}/ -o ${1}.full.bedGraph ${outdir}/CpG*${1}*.txt.gz
 
 ${bismarkpath}/coverage2cytosine --gzip --dir ${outdir}/ --genome_folder ${refpath} -o ${1}.cyto.txt.gz ${outdir}/${1}.full.bismark.cov.gz
 
