@@ -1,6 +1,6 @@
 #!/bin/bash
 
-outdir=/scratch/groups/wtimp1/170119_chicken/aligned/clnref
+outdir=/scratch/groups/wtimp1/170119_chicken/aligned/
 
 for samp in ACTTGA AGTCAA AGTTCC ATGTCA CAGATC CCGTCC CTTGTA GATCAG GGCTAC GTCCGC GTGAAA TAGCTT
 do
@@ -14,11 +14,11 @@ do
 	fi
     done
     
-    if [[  1 -eq 0 ]]; then
+    if [[  0 -eq 0 ]]; then
 	sbatch bismark_cat_marcc.sh ${samp} ${outdir}/${samp}
     fi
     
-    if [ 0 -eq 0 ]; then
+    if [ 1 -eq 0 ]; then
 	sbatch bismark_extract_marcc.sh ${samp} ${outdir}/${samp}
     fi
 
