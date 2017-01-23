@@ -7,21 +7,22 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=8
 #####SBATCH --cpus-per-task=3
+#SBATCH --mem=25GB
 #SBATCH --mail-type=end
 #SBATCH --mail-user=ilee29@jhu.edu
 
 ###load module
-module load perl
 
 ###execute
 wdir=$PWD
-outdir=/scratch/groups/wtimp1/170119_chicken/aligned/${1}
+outdir=${2}
 bismarkpath=/home-2/ilee29@jhu.edu/Code/Bismark
-refpath=/scratch/groups/wtimp1/Reference/chicken/galGal5
+refpath=/scratch/groups/wtimp1/Reference/chicken/galGal5cln
 
-#${bismarkpath}/bismark_methylation_extractor -p --multicore 8 --gzip \
-#    --genome_folder ${refpath} \
-#    ${outdir}/${1}.full.bam -o ${outdir} --no_header
+# let's do extraction, bedgraph, and cyto report all at once
+${bismarkpath}/bismark_methylation_extractor -p --multicore 8 --gzip \
+    --genome_folder ${refpath} \
+    ${outdir}/${1}.full.bam -o ${outdir} --no_header
 
-${bismarkpath}/bismark2bedGraph --dir ${outdir}/ --scaffolds -o ${1}.full.bedGraph ${outdir}/CpG*${1}*.txt.gz 
+
 

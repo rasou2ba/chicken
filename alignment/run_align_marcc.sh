@@ -9,25 +9,23 @@ do
     for lane in {1..8}
     do
 	##bismark align
-	if [ 1 -eq 1 ]; then	    
+	if [ 0 -eq 1 ]; then	    
 	    sbatch bismark_align_marcc.sh ${lane} ${samp} ${outdir}/${samp}
 	fi
     done
     
-    if [[  1 -eq 0 ]]; then
-	sbatch bismark_cat_marcc.sh ${samp}
-    else
-	echo ${samp} "already concatanated"
+    if [[  0 -eq 0 ]]; then
+	sbatch bismark_cat_marcc.sh ${samp} ${outdir}/${samp}
     fi
     
     if [ 1 -eq 0 ]; then
-	sbatch bismark_extract_marcc.sh $samp
+	sbatch bismark_extract_marcc.sh ${samp} ${outdir}/${samp}
     fi
 
     if [ 1 -eq 0 ]; then
-	sbatch bismark_cytoReport_marcc.sh $samp
+	sbatch bismark_report_marcc.sh ${samp} ${outdir}/${samp}
     fi
-
+    
 done    
 
 
