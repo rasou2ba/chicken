@@ -12,7 +12,7 @@
 #SBATCH --mail-user=ilee29@jhu.edu
 
 ###load module
-
+module load samtools
 ###execute
 wdir=$PWD
 outdir=${2}
