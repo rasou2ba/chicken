@@ -13,6 +13,7 @@
 
 ###load module
 module load samtools
+module load perl
 ###execute
 wdir=$PWD
 outdir=${2}

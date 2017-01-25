@@ -34,11 +34,11 @@ rm ${tmpdir}/${lanesamp}/*
 fastq1=`ls ${rawdir}/C6HRUANXX_${lanesamp}_1.fastq.gz`
 fastq2=`ls ${rawdir}/C6HRUANXX_${lanesamp}_2.fastq.gz`
 
-${trimpath} --paired --fastqc \
-	    --path_to_fastqc ${fastqcpath}\
-	    --clip_R1 5 --clip_R2 5 \
-	    --three_prime_clip_R1 5 --three_prime_clip_R2 5 \
+${trimpath} --paired \
 	    ${fastq1} ${fastq2} \
+	    --fastqc_args "--path_to_fastqc ${fastqcpath}"\
+	    --clip_R1 2 --clip_R2 4 \
+	    --three_prime_clip_R1 2 --three_prime_clip_R2 1 \
 	    -o ${tmpdir}/${lanesamp}
 
 trim1=`ls ${tmpdir}/${lanesamp}/*val_1.fq.gz`
