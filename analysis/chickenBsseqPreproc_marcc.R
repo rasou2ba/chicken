@@ -19,10 +19,11 @@ if (T) {
 
 ## smoothing
 if (T) {
+    ##no parallelization to save memory
     ##from amy
     ##prolly based on cancer as well for Block finding
-    BS.fit.large<-BSmooth(bismark,mc.cores=6,parallelBy="chromosome",verbose=TRUE,ns=500,h=20000)
+    BS.fit.large<-BSmooth(bismark,mc.cores=6,parallelBy="sample",verbose=TRUE,ns=500,h=20000)
     ##kasper optimized based on cancer data dont got smaller than this cuz takes forever to smooth to get DMRs
-    BS.fit.small<-BSmooth(bismark,mc.cores=6,parallelBy="chromosome",verbose=TRUE,ns=20,h=1000)
+    BS.fit.small<-BSmooth(bismark,mc.cores=6,parallelBy="sample",verbose=TRUE,ns=20,h=1000)
     save(list=c("bismark.samp.info","bismark", "BS.fit.large", "BS.fit.small"), file=file.path(datdir,paste0("bsobject",samp,".rda")))
 }
