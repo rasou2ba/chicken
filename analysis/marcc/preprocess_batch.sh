@@ -2,12 +2,12 @@
 
 #SBATCH
 #SBATCH --job-name=align
-#SBATCH --time=3:00:0
+#SBATCH --time=12:00:0
 #SBATCH --partition=lrgmem
 #SBATCH --nodes=1
-##SBATCH --mem=480GB
+#SBATCH --mem=240GB
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=12
+#SBATCH --cpus-per-task=4
 #SBATCH --mail-type=end
 #SBATCH --mail-user=ilee29@jhu.edu
 
@@ -16,4 +16,4 @@ module load R
 
 ###execute
 
-~/Code/projects/chicken/analysis/chickenBsseqPreproc_marcc.R ${1}
+~/Code/projects/chicken/analysis/chickenBsseqPreproc_marcc.R

@@ -1,12 +1,13 @@
+#!/usr/bin/Rscript
 ##First set central code dir for sourcing
 codedir="~/Code/isac/chicken/meth"
 
 ##Plots go here:
-outdir="~/Dropbox/Data/Genetics/MethSeq/150415_chicken/"
+outdir="/home/isac/Dropbox/Data/Genetics/MethSeq/170120_chicken"
 plotdir=file.path(outdir,"plots")
 
 ##All alignment data lives here
-procroot="/mithril/Data/NGS/Aligned/150415_HiSeqChick"
+datdir="/atium/Data/NGS/Aligned/170120_chicken"
 
 ##Gene data
 genedir="/mithril/homes/isac/Data/genes"
@@ -28,37 +29,11 @@ require(doMC)
 registerDoMC()
 options(cores=4)
 
-# Load genes list
-# file is bed format
-#genes.comp= read.table(file=gzfile(genepath),sep="\t",header=F,stringsAsFactors=F)
-#genes = genes.comp[,c(2,13,3,5,6,4)]
-#colnames(genes) = c("name","ID","chrom","start","end","strand")
-#genes.gr = GRanges(seqnames=genes$chrom,IRanges(start=genes$start,end=genes$end),id=genes$ID,name=genes$name)
-
-
 # Load bsseq.R file
-load(file=file.path(procroot,"bsobject.rda")) # bsobject has bismark,BS.fit.large,BS.fit.small
-load(file=file.path(procroot,"processed.rda"))# processed has blocks,dmrs,tstat.blocks,tstat.dmrs,combos,bismark.samp.info
 
-pData <- pData(BS.fit.small)
-pData$pheno = bismark.samp.info$pheno
-pData$col <- as.character(bismark.samp.info$col)
+load(file=file.path(datdir,"bsobject.rda")) # bsobject has bismark,BS.fit.large,BS.fit.small
 
-pData(BS.fit.small) <- pData
-pData(BS.fit.large) <- pData
-
-combos
-
-# plotting tstat distrbutions
-
-pdf(file.path(plotdir,"tstatDist.pdf"))
-for (i in seq(length(tstat.dmrs))){
-    print(i)
-    plot(tstat.dmrs[[i]])
-}
-dev.off()
-
-#PCA?
+#PCA
 # get the methylation values: refer to bsseq user guide
 totmeth = getMeth(BS.fit.small,type="smooth",what="perBase")
 totcov = getCoverage(bismark,type="Cov",what="perBase")
