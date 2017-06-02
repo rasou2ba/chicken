@@ -6,11 +6,9 @@ Data is available in GEO under the accession number [###](URL here: https://www.
 ## Software used
 | Software | Version | URL | 
 | --- | --- | --- |
-| FastQC | 0.11.4 | http://www.bioinformatics.babraham.ac.uk/projects/fastqc/ |
 | Trim Galore! | 0.4.1 | http://www.bioinformatics.babraham.ac.uk/projects/trim_galore/  |
 | Bismark | 0.16.3 | http://www.bioinformatics.babraham.ac.uk/projects/bismark/ |
 ## Data analysis code
 Code used for all of the quality assessment and data analysis steps are available in each of the scripts below.
-1. [Quality assessment with FastQC](code/INSERT FILE NAMEh)
 1. [Adaptor and end-trimming with Trim Galore!](code/INSERT FILE NAME)
 1. [Alignment with Bismark](code/INSERT FILE NAME)
